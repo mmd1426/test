@@ -1,7 +1,7 @@
 import wave
 from piper import PiperVoice
 
-voice = PiperVoice.load("/model/fa_IR-mana-medium.onnx")
+voice = PiperVoice.load("/app/model/fa_IR-mana-medium.onnx")
 
 def run_model(text):
     
