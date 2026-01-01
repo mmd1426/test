@@ -9,11 +9,13 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 # Copy requirements and install dependencies
-COPY requirements.txt /requirements.txt
-RUN pip install --no-cache-dir -r /requirements.txt
+COPY requirements.txt /app/requirements.txt
+RUN pip install -r requirements.txt
 
 # Copy application code
 COPY . .
+
+RUN python agent.py download-files
 
 # Run the agent
 CMD ["python", "agent.py", "start"]

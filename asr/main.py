@@ -7,7 +7,7 @@ from core import asr
 
 app = FastAPI(title="ASR API")
 
-UPLOAD_DIR = "/voices"
+UPLOAD_DIR = "/app/voices"
 os.makedirs(UPLOAD_DIR, exist_ok=True)
 
 @app.post("/asr")

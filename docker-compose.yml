@@ -15,6 +15,7 @@ services:
       - 8020:8020
     volumes:
       - ./tts/model/:/app/model/
+      - ./voices/:/app/voices/
     command: uvicorn main:app --port 8020 --host 0.0.0.0 --reload
     networks:
       - agent_network
@@ -27,6 +28,7 @@ services:
       - 8010:8010
     volumes:
       - ./asr/model/:/app/model/
+      - ./voices/:/app/voices/
     command: uvicorn main:app --port 8010 --host 0.0.0.0 --reload
     networks:
       - agent_network
@@ -52,7 +54,7 @@ services:
     ports:
       - "8000:8000"
     environment:
-      - LIVEKIT_URL=http://localhost:7880
+      - LIVEKIT_URL=ws://livekit:7880
       - LIVEKIT_API_KEY=devkey
       - LIVEKIT_API_SECRET=secret
     depends_on:
