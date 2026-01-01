@@ -16,8 +16,6 @@ services:
     command: uvicorn main:app --port 8020 --host 0.0.0.0 --reload
     networks:
       - agent_network
-
-  llm:
   
   
   asr:
