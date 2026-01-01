@@ -2,7 +2,7 @@ from transformers import AutoModelForSpeechSeq2Seq, AutoProcessor, pipeline
 import torch
 
 
-MODEL_ID = "whisper-tiny-fa"
+MODEL_ID = "/app/model/whisper-tiny-fa"
 
 device = "cuda" if torch.cuda.is_available() else "cpu"
 
