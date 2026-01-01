@@ -1,0 +1,51 @@
+services:
+  livekit:
+    image: livekit/livekit-server:master
+    ports:
+      - "7880:7880"
+      - "7881:7881"
+    command: --dev --bind "0.0.0.0"
+    networks:
+      - agent_network
+
+  tts:
+    build:
+      context: ./tts
+    ports:
+      - 8020:8020
+    command: uvicorn main:app --port 8020 --host 0.0.0.0 --reload
+    networks:
+      - agent_network
+
+  llm:
+  
+  
+  asr:
+    build:
+      context: ./asr
+    ports:
+      - 8010:8010
+    volumes:
+      - /model/:/root/.cache/huggingface/hub/
+    command: uvicorn main:app --port 8010 --host 0.0.0.0 --reload
+    networks:
+      - agent_network
+
+  frontend:
+    build:
+      context: ./frontend
+    ports:
+      - "3000:3000"
+    environment:
+      - NEXT_PUBLIC_LIVEKIT_URL=ws://localhost:7880
+      - LIVEKIT_URL=ws://livekit:7880
+      - LIVEKIT_API_KEY=devkey
+      - LIVEKIT_API_SECRET=secret
+    depends_on:
+      - livekit
+    networks:
+      - agent_network
+  
+  agent:
+    build:
+      context: /agent/
