@@ -23,7 +23,7 @@ server = AgentServer()
 async def my_agent(ctx: agents.JobContext):
     session = AgentSession(
         stt=openai.STT(base_url="http://asr:8010"),
-        llm=openai.LLM(base_url="http://llm:8030"),
+        llm=openai.LLM(model="qwen/qwen3-4b:free", base_url="https://openrouter.ai/api/v1", api_key="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"),
         tts=openai.TTS(base_url="http://tts:8020"),
         vad=silero.VAD.load(),
         turn_detection=MultilingualModel(),
