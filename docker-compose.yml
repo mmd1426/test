@@ -48,4 +48,21 @@ services:
   
   agent:
     build:
-      context: /agent/
+      context: ./agent/
+    ports:
+      - "8000:8000"
+    environment:
+      - LIVEKIT_URL=http://localhost:7880
+      - LIVEKIT_API_KEY=devkey
+      - LIVEKIT_API_SECRET=secret
+    depends_on:
+      - livekit
+      - asr
+      - llm
+      - tts
+    networks:
+      - agent_network
+
+networks:
+  agent_network:
+    driver: bridge

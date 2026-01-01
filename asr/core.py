@@ -9,7 +9,7 @@ device = "cuda" if torch.cuda.is_available() else "cpu"
 processor = AutoProcessor.from_pretrained(MODEL_ID)
 model = AutoModelForSpeechSeq2Seq.from_pretrained(MODEL_ID).to(device)
 
-asr = pipeline(
+asr_pipeline = pipeline(
     "automatic-speech-recognition",
     model=model,
     tokenizer=processor.tokenizer,
@@ -19,6 +19,6 @@ asr = pipeline(
 
 def asr(audio_path):
 
-    result = asr(audio_path)
+    result = asr_pipeline(audio_path)
 
     return result["text"]

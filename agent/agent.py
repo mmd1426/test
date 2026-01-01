@@ -22,9 +22,9 @@ server = AgentServer()
 @server.rtc_session()
 async def my_agent(ctx: agents.JobContext):
     session = AgentSession(
-        stt=openai.STT(base_url="127.0.0.1:8010"),
-        llm=openai.LLM(base_url="127.0.0.1:8010"),
-        tts=openai.TTS(base_url="127.0.0.1:8020"),
+        stt=openai.STT(base_url="http://asr:8010"),
+        llm=openai.LLM(base_url="http://llm:8030"),
+        tts=openai.TTS(base_url="http://tts:8020"),
         vad=silero.VAD.load(),
         turn_detection=MultilingualModel(),
     )
