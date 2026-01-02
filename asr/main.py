@@ -1,28 +1,23 @@
-from fastapi import FastAPI, UploadFile, File
-import shutil
-import uuid
-import os
+from fastapi import FastAPI, UploadFile, File, Form
+from transformers import pipeline
+import io
+import soundfile as sf
 
-from core import asr
+app = FastAPI()
 
-app = FastAPI(title="ASR API")
+asr = pipeline(
+    "automatic-speech-recognition",
+    model="/app/model/whisper-tiny-fa"
+)
 
-UPLOAD_DIR = "/app/voices"
-os.makedirs(UPLOAD_DIR, exist_ok=True)
+@app.post("/v1/audio/transcriptions")
+async def transcribe(
+    file: UploadFile = File(...),
+    model: str = Form(...)
+):
+    audio_bytes = await file.read()
 
-@app.post("/asr")
-async def speech_to_text(file: UploadFile = File(...)):
+    audio, sr = sf.read(io.BytesIO(audio_bytes))
+    text = asr({"array": audio, "sampling_rate": sr})["text"]
 
-    file_id = str(uuid.uuid4())
-    file_path = f"{UPLOAD_DIR}/{file_id}_{file.filename}"
-
-    with open(file_path, "wb") as buffer:
-        shutil.copyfileobj(file.file, buffer)
-
-    text = asr(file_path)
-
-    os.remove(file_path)
-
-    return {
-        "text": text
-    }
+    return {"text": text}

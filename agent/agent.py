@@ -22,9 +22,9 @@ server = AgentServer()
 @server.rtc_session()
 async def my_agent(ctx: agents.JobContext):
     session = AgentSession(
-        stt=openai.STT(base_url="http://asr:8010", api_key="no-key"),
-        llm=openai.LLM(model="qwen/qwen3-4b:free", base_url="https://openrouter.ai/api/v1"),
-        tts=openai.TTS(base_url="http://tts:8020", api_key="no-key"),
+        stt=openai.STT(model="whisper-fa", base_url="http://asr:8010/v1", api_key="no-key-needed"),
+        llm=openai.LLM.with_openrouter(model="meta-llama/llama-3.2-3b-instruct:free"),
+        tts=openai.TTS(model="piper-fa", base_url="http://tts:8020/v1", api_key="no-key-needed"),
         vad=silero.VAD.load(),
         turn_detection=MultilingualModel(),
     )

@@ -15,7 +15,6 @@ services:
       - 8020:8020
     volumes:
       - ./tts/model/:/app/model/
-      - ./voices/:/app/voices/
     command: uvicorn main:app --port 8020 --host 0.0.0.0 --reload
     networks:
       - agent_network
@@ -28,7 +27,6 @@ services:
       - 8010:8010
     volumes:
       - ./asr/model/:/app/model/
-      - ./voices/:/app/voices/
     command: uvicorn main:app --port 8010 --host 0.0.0.0 --reload
     networks:
       - agent_network
