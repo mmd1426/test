@@ -5,6 +5,8 @@ from livekit.agents import AgentServer,AgentSession, Agent, room_io
 from livekit.plugins import noise_cancellation, silero, openai
 from livekit.plugins.turn_detector.multilingual import MultilingualModel
 
+from custom_tts.PiperTTSPlugin import PiperTTSPlugin
+
 load_dotenv(".env")
 
 
@@ -24,7 +26,7 @@ async def my_agent(ctx: agents.JobContext):
     session = AgentSession(
         stt=openai.STT(model="whisper-fa", base_url="http://asr:8010/v1", api_key="no-key-needed"),
         llm=openai.LLM.with_openrouter(model="meta-llama/llama-3.2-3b-instruct:free"),
-        tts=openai.TTS(model="piper-fa", base_url="http://tts:8020/v1", api_key="no-key-needed"),
+        tts=PiperTTSPlugin(model="/app/tts-model/fa_IR-mana-medium.onnx"),
         vad=silero.VAD.load(),
         turn_detection=MultilingualModel(),
     )

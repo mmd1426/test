@@ -7,18 +7,6 @@ services:
     command: --dev --bind "0.0.0.0"
     networks:
       - agent_network
-
-  tts:
-    build:
-      context: ./tts
-    ports:
-      - 8020:8020
-    volumes:
-      - ./tts/model/:/app/model/
-    command: uvicorn main:app --port 8020 --host 0.0.0.0 --reload
-    networks:
-      - agent_network
-  
   
   asr:
     build:
@@ -51,6 +39,8 @@ services:
       context: ./agent/
     ports:
       - "8000:8000"
+    volumes:
+      - ./tts/model:/app/tts-model/
     environment:
       - LIVEKIT_URL=ws://livekit:7880
       - LIVEKIT_API_KEY=devkey
@@ -58,7 +48,6 @@ services:
     depends_on:
       - livekit
       - asr
-      - tts
     networks:
       - agent_network
 
